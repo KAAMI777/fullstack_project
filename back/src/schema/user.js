@@ -1,7 +1,6 @@
 const mongoose = require('mongoose')
 
-
-const userSchema = new mongoose.Schema({
+const userSchemaRaw = new mongoose.Schema({
   name: { type: String, required: true },
   role: {
     type: String,
@@ -12,4 +11,4 @@ const userSchema = new mongoose.Schema({
 }, { timestamps: true });
 
 
-module.exports = mongoose.module('User', userSchema);
+module.exports = { userSchema: mongoose.module('User', userSchemaRaw), userSchemaRaw };

@@ -12,4 +12,5 @@ module.exports = function connectDb() {
     internalConnectDb().then(() => { console.log("connected to database") }).catch(err => { console.error("failed to connect to database") });
     connected = true;
   }
+  return connected;
 }

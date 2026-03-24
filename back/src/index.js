@@ -1,7 +1,10 @@
 require('dotenv').config()
 const express = require('express');
 const connectDb = require('./db.js')
-connectDb();
+if (!connectDb()) {
+  process.exit(-1);
+}
+
 const userRouter = require("./routers/user.js")
 const questionRouter = require("./routers/question.js")
 
