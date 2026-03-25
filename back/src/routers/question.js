@@ -1,20 +1,19 @@
-const express = require('express')
-const router = express.Router()
+const express = require('express');
+const quiz =  require('../third_party_ai/gemini');
+const auth = require('../utils/authmiddle');
 
-router.get('/create', (req, res) => {
-  // TODO: create new user
-  res.send('created new question')
-})
+const router = express.Router();
 
-router.get('/delete', (req, res) => {
-  // TODO: delete user
-  res.send('delete question')
-})
+// Protected route
+router.get('/create', auth, async (req, res) => {
+    const text  = req.query.text ;
+    const quizData = await quiz(text);
+    res.json({
+        msg: "Question created",
+        user: req.user,
+        quiz: quizData
+    });
+});
 
-
-router.get('/modify', (req, res) => {
-  // TODO: modify user
-  res.send('modified question')
-})
 
 module.exports = router;
