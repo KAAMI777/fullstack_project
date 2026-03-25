@@ -1,4 +1,4 @@
-import { Form, Input, Button, Card, Typography, message } from "antd";
+import { Form, Input, Button, Card, Typography, message, Select } from "antd";
 import { useNavigate } from "react-router-dom";
 import constants from "../constants";
 
@@ -8,8 +8,9 @@ export default function SignUp() {
   const navigate = useNavigate();
 
   const onFinish = async (values) => {
+    console.log("Signup values:", values);
     try {
-      const res = await fetch(`${constants.BASE_API_URL}api/auth/signup`, {
+      const res = await fetch(`${constants.BASE_API_URL}/user/register`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(values),
@@ -26,7 +27,11 @@ export default function SignUp() {
   return (
     <Card style={{ maxWidth: 420, margin: "4rem auto", borderRadius: 8 }}>
       <Title level={4}>Create an account</Title>
-      <Form layout="vertical" onFinish={onFinish}>
+      <Form
+        layout="vertical"
+        onFinish={onFinish}
+        initialValues={{ role: "student" }}
+      >
         <Form.Item
           label="Email"
           name="email"
@@ -36,6 +41,17 @@ export default function SignUp() {
           ]}
         >
           <Input placeholder="you@example.com" />
+        </Form.Item>
+
+        <Form.Item
+          label="Role"
+          name="role"
+          rules={[{ required: true, message: "Role is required" }]}
+        >
+          <Select>
+            <Select.Option value="student">Student</Select.Option>
+            <Select.Option value="teacher">Teacher</Select.Option>
+          </Select>
         </Form.Item>
 
         <Form.Item
@@ -57,7 +73,7 @@ export default function SignUp() {
       </Form>
 
       <Text>Already have an account? </Text>
-      <a href="/signin">Sign in</a>
+      <a href="/fullstack_project/sign-in">Sign in</a>
     </Card>
   );
 }
