@@ -1,5 +1,7 @@
 require("dotenv").config();
 const express = require("express");
+const cors = require("cors");
+const morgan = require("morgan");
 const connectDb = require("./db.js");
 if (!connectDb()) {
   process.exit(-1);
@@ -11,6 +13,11 @@ const questionRouter = require("./routers/question.js");
 const PORT = process.env.PORT || 3000;
 
 const app = express();
+
+const morganFormat = process.env.NODE_ENV === "production" ? "combined" : "dev";
+app.use(morgan(morganFormat));
+
+app.use(cors());
 
 app.get("/ping", (req, res) => {
   res.status(200).send("pong");
