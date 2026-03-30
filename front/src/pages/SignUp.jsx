@@ -17,7 +17,7 @@ export default function SignUp() {
       });
       if (!res.ok) throw new Error("Signup failed");
       message.success("Account created — redirecting to sign in...");
-      navigate("/signin");
+      navigate("/fullstack_projectsign-in");
     } catch (err) {
       console.error(err);
       message.error(err.message || "Signup error");

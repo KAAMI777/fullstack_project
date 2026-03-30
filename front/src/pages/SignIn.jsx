@@ -3,6 +3,7 @@ import { useForm, Controller } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import constants from "../constants";
 import axios from "axios";
+import useAuth from "../hooks/useAuth";
 import {
   Card,
   Input,
@@ -21,6 +22,7 @@ const { Title, Text } = Typography;
 export default function SignIn() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
+  const auth = useAuth();
 
   const {
     control,
@@ -47,14 +49,13 @@ export default function SignIn() {
       );
 
       const respData = response && response.data ? response.data : {};
-      const storage = data.remember ? localStorage : sessionStorage;
+      const userObj = respData.user || respData.data || null;
+
       if (respData.token) {
-        storage.setItem("token", respData.token);
-        axios.defaults.headers.common["Authorization"] =
-          `Bearer ${respData.token}`;
+        auth.login({ token: respData.token, user: userObj }, data.remember);
       }
       message.success({ content: "Signed in", key: "signin", duration: 2 });
-      navigate("/dashboard");
+      navigate("/fullstack_project/dashboard");
     } catch (err) {
       console.error("Sign in error:", err);
       message.error({ content: "Sign in failed", key: "signin" });
